@@ -10,6 +10,8 @@ This is a bindable sliding panel control for Xamarin.Forms using .NET Standard 2
 * BottomView - [ContentView][Default null] -
 
 * HasOneActivePanel - [Bool][Default True] - Allows only one panel to be active at a time.
+* IsSwipeGesturesEnabled - [Bool][Default True] - Enable Swipe gesture.
+* IsTapToOpenEnabled - [Bool][Default True] - Enable Tap gesture.
 
 * LeftPanelRatio - [Double][Default 1] - Defines the ratio width of the view relative to the screen.
 * TopPanelRatio - [Double][Default 1]  - Defines the ratio height of the view relative to the screen.
