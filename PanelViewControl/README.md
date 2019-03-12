@@ -1,4 +1,4 @@
-#Multi-Directional Sliding Panel Control 
+# Multi-Directional Sliding Panel Control 
 
 This is a bindable sliding panel control for Xamarin.Forms using .NET Standard 2.0
 
