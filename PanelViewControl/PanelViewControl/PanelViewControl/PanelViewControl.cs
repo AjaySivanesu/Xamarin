@@ -18,8 +18,8 @@ namespace PanelViewControl
 
     public class PanelViewControl : ContentView
     {
-        private AbsoluteLayout MainLayout;
-        private bool IsSliding;
+        private AbsoluteLayout _mainLayout;
+        private bool _isSliding;
 
         #region Bindable Properties
         public static readonly BindableProperty MainViewProperty =
@@ -91,7 +91,25 @@ namespace PanelViewControl
                         control.SetBottomView((ContentView)newValue);
                     }
                 });
+
+
+        public static readonly BindableProperty ActivePanelProperty =
+            BindableProperty.Create(nameof(ActivePanel),
+                typeof(Panel),
+                typeof(PanelViewControl),
+                Panel.None,
+                BindingMode.TwoWay,
+                propertyChanged: (bindable, oldValue, newValue) =>
+                {
+                    if (newValue != null)
+                    {
+                        var activePanel = (Panel)newValue;
+                        var control = (PanelViewControl)bindable;
+                        control.ActivateOnePanel(activePanel);
+                    }
+                });
         #endregion
+
 
         public ContentView MainView
         {
@@ -123,9 +141,16 @@ namespace PanelViewControl
             set => SetValue(BottomViewProperty, value);
         }
 
-        public Panel ActivePanel { get; set; } = Panel.None;
-        public int SwipeSensitivity { get; set; } = 40;
+        public Panel ActivePanel
+        {
+            get => (Panel)GetValue(ActivePanelProperty);
+            set => SetValue(ActivePanelProperty, value);
+        }
+
         public bool HasOneActivePanel { get; set; } = true;
+        public bool IsSwipeGesturesEnabled { get; set; } = true;
+        public bool IsTapToOpenEnabled { get; set; } = true;
+        public int SwipeSensitivity { get; set; } = 40;
 
 
         public double LeftPanelRatio { get; set; } = 1;
@@ -154,7 +179,7 @@ namespace PanelViewControl
                 if (ActivePanel == Panel.None)
                 {
                     LeftView.TranslationX = LeftPanelFloatSpacing - LeftView.Width;
-                    RightView.TranslationX = MainLayout.Width - RightPanelFloatSpacing;
+                    RightView.TranslationX = _mainLayout.Width - RightPanelFloatSpacing;
                     TopView.TranslationY = TopPanelFloatSpacing - TopView.Height;
                     BottomView.TranslationY = visualElement.Height - BottomPanelFloatSpacing;
                 }
@@ -216,17 +241,17 @@ namespace PanelViewControl
         #region View Renderes 
         private void SetLayout()
         {
-            MainLayout = new AbsoluteLayout();
-            MainLayout.VerticalOptions = LayoutOptions.FillAndExpand;
-            MainLayout.HorizontalOptions = LayoutOptions.FillAndExpand;
+            _mainLayout = new AbsoluteLayout();
+            _mainLayout.VerticalOptions = LayoutOptions.FillAndExpand;
+            _mainLayout.HorizontalOptions = LayoutOptions.FillAndExpand;
 
-            this.Content = MainLayout;
+            this.Content = _mainLayout;
         }
 
         private void SetMainView(ContentView view)
         {
             if (MainView != null)
-                MainLayout.Children.Remove(MainView);
+                _mainLayout.Children.Remove(MainView);
 
             MainView = view;
 
@@ -240,33 +265,50 @@ namespace PanelViewControl
                                             IsTopPanelOverlayed ? 0 : TopPanelFloatSpacing,
                                             IsBottomPanelOverlayed ? 0 : BottomPanelFloatSpacing);
 
+            if (IsSwipeGesturesEnabled)
+            {
+                var MainViewLeftSwipeGesture = new SwipeGestureRecognizer { Direction = SwipeDirection.Left };
+                MainViewLeftSwipeGesture.Swiped += OnMainViewSwiped;
 
+                var MainViewRightSwipeGesture = new SwipeGestureRecognizer { Direction = SwipeDirection.Right };
+                MainViewRightSwipeGesture.Swiped += OnMainViewSwiped;
 
-            var MainViewLeftSwipeGesture = new SwipeGestureRecognizer { Direction = SwipeDirection.Left };
-            MainViewLeftSwipeGesture.Swiped += OnMainViewSwiped;
+                var MainViewUpSwipeGesture = new SwipeGestureRecognizer { Direction = SwipeDirection.Up };
+                MainViewUpSwipeGesture.Swiped += OnMainViewSwiped;
 
-            var MainViewRightSwipeGesture = new SwipeGestureRecognizer { Direction = SwipeDirection.Right };
-            MainViewRightSwipeGesture.Swiped += OnMainViewSwiped;
+                var MainViewDownSwipeGesture = new SwipeGestureRecognizer { Direction = SwipeDirection.Down };
+                MainViewDownSwipeGesture.Swiped += OnMainViewSwiped;
 
-            var MainViewUpSwipeGesture = new SwipeGestureRecognizer { Direction = SwipeDirection.Up };
-            MainViewUpSwipeGesture.Swiped += OnMainViewSwiped;
+                MainView.GestureRecognizers.Add(MainViewLeftSwipeGesture);
+                MainView.GestureRecognizers.Add(MainViewRightSwipeGesture);
+                MainView.GestureRecognizers.Add(MainViewUpSwipeGesture);
+                MainView.GestureRecognizers.Add(MainViewDownSwipeGesture);
+            }
 
-            var MainViewDownSwipeGesture = new SwipeGestureRecognizer { Direction = SwipeDirection.Down };
-            MainViewDownSwipeGesture.Swiped += OnMainViewSwiped;
+            if (IsTapToOpenEnabled)
+            {
+                var mainViewTapGesture = new TapGestureRecognizer();
+                mainViewTapGesture.Tapped += (s, o) =>
+                {
+                    if (ActivePanel == Panel.None) return;
 
-            MainView.GestureRecognizers.Add(MainViewLeftSwipeGesture);
-            MainView.GestureRecognizers.Add(MainViewRightSwipeGesture);
-            MainView.GestureRecognizers.Add(MainViewUpSwipeGesture);
-            MainView.GestureRecognizers.Add(MainViewDownSwipeGesture);
+                    if (HasOneActivePanel)
+                    {
+                        ActivateOnePanel(Panel.None);
+                    }
+                };
 
-            MainLayout.Children.Add(MainView);
-            MainLayout.LowerChild(MainView);
+                MainView.GestureRecognizers.Add(mainViewTapGesture);
+            }
+
+            _mainLayout.Children.Add(MainView);
+            _mainLayout.LowerChild(MainView);
         }
 
         private void SetLeftView(ContentView view)
         {
             if (LeftView != null)
-                MainLayout.Children.Remove(LeftView);
+                _mainLayout.Children.Remove(LeftView);
 
             LeftView = view;
             AbsoluteLayout.SetLayoutBounds(LeftView, new Rectangle(0, 0, LeftPanelRatio, 1));
@@ -276,33 +318,40 @@ namespace PanelViewControl
             LeftView.Margin = new Thickness(0, IsTopPanelOverlayed ? 0 : TopPanelFloatSpacing,
                                             0, IsBottomPanelOverlayed ? 0 : BottomPanelFloatSpacing);
 
-            var leftViewRightSwipeGesture = new SwipeGestureRecognizer { Direction = SwipeDirection.Right };
-            leftViewRightSwipeGesture.Swiped += OnLeftViewSwiped;
-            LeftView.GestureRecognizers.Add(leftViewRightSwipeGesture);
-
-            var leftViewLeftSwipeGesture = new SwipeGestureRecognizer { Direction = SwipeDirection.Left };
-            leftViewLeftSwipeGesture.Swiped += OnLeftViewSwiped;
-            LeftView.GestureRecognizers.Add(leftViewLeftSwipeGesture);
-
-            var leftViewTapGesture = new TapGestureRecognizer();
-            leftViewTapGesture.Tapped += (s, o) =>
+            if (IsSwipeGesturesEnabled)
             {
-                if (ActivePanel == Panel.Left) return;
+                var leftViewRightSwipeGesture = new SwipeGestureRecognizer { Direction = SwipeDirection.Right };
+                leftViewRightSwipeGesture.Swiped += OnLeftViewSwiped;
+                LeftView.GestureRecognizers.Add(leftViewRightSwipeGesture);
 
-                if (HasOneActivePanel)
+                var leftViewLeftSwipeGesture = new SwipeGestureRecognizer { Direction = SwipeDirection.Left };
+                leftViewLeftSwipeGesture.Swiped += OnLeftViewSwiped;
+                LeftView.GestureRecognizers.Add(leftViewLeftSwipeGesture);
+            }
+
+            if (IsTapToOpenEnabled)
+            {
+                var leftViewTapGesture = new TapGestureRecognizer();
+                leftViewTapGesture.Tapped += (s, o) =>
                 {
-                    ActivateOnePanel(Panel.Left);
-                }
-            };
-            LeftView.GestureRecognizers.Add(leftViewTapGesture);
+                    if (ActivePanel == Panel.Left) return;
 
-            MainLayout.Children.Add(LeftView);
+                    if (HasOneActivePanel)
+                    {
+                        ActivateOnePanel(Panel.Left);
+                    }
+                };
+
+                LeftView.GestureRecognizers.Add(leftViewTapGesture);
+            }
+
+            _mainLayout.Children.Add(LeftView);
         }
 
         private void SetRightView(ContentView view)
         {
             if (RightView != null)
-                MainLayout.Children.Remove(RightView);
+                _mainLayout.Children.Remove(RightView);
 
             RightView = view;
             AbsoluteLayout.SetLayoutBounds(RightView, new Rectangle(0, 0, RightPanelRatio, 1));
@@ -313,94 +362,113 @@ namespace PanelViewControl
             RightView.Margin = new Thickness(0, IsTopPanelOverlayed ? 0 : TopPanelFloatSpacing,
                                              0, IsBottomPanelOverlayed ? 0 : BottomPanelFloatSpacing);
 
-            var rightViewRightSwipeGesture = new SwipeGestureRecognizer { Direction = SwipeDirection.Right };
-            rightViewRightSwipeGesture.Swiped += OnRightViewSwiped;
-            RightView.GestureRecognizers.Add(rightViewRightSwipeGesture);
-
-            var rightViewLeftSwipeGesture = new SwipeGestureRecognizer { Direction = SwipeDirection.Left };
-            rightViewLeftSwipeGesture.Swiped += OnRightViewSwiped;
-            RightView.GestureRecognizers.Add(rightViewLeftSwipeGesture);
-
-            var rightViewTapGesture = new TapGestureRecognizer();
-            rightViewTapGesture.Tapped += (s, o) =>
+            if (IsSwipeGesturesEnabled)
             {
-                if (ActivePanel == Panel.Right) return;
+                var rightViewRightSwipeGesture = new SwipeGestureRecognizer { Direction = SwipeDirection.Right };
+                rightViewRightSwipeGesture.Swiped += OnRightViewSwiped;
+                RightView.GestureRecognizers.Add(rightViewRightSwipeGesture);
 
-                if (HasOneActivePanel)
+                var rightViewLeftSwipeGesture = new SwipeGestureRecognizer { Direction = SwipeDirection.Left };
+                rightViewLeftSwipeGesture.Swiped += OnRightViewSwiped;
+                RightView.GestureRecognizers.Add(rightViewLeftSwipeGesture);
+            }
+
+            if (IsTapToOpenEnabled)
+            {
+                var rightViewTapGesture = new TapGestureRecognizer();
+                rightViewTapGesture.Tapped += (s, o) =>
                 {
-                    ActivateOnePanel(Panel.Right);
-                }
-            };
-            RightView.GestureRecognizers.Add(rightViewTapGesture);
+                    if (ActivePanel == Panel.Right) return;
 
-            MainLayout.Children.Add(RightView);
+                    if (HasOneActivePanel)
+                    {
+                        ActivateOnePanel(Panel.Right);
+                    }
+                };
+
+                RightView.GestureRecognizers.Add(rightViewTapGesture);
+            }
+
+            _mainLayout.Children.Add(RightView);
         }
 
         private void SetTopView(ContentView view)
         {
             if (TopView != null)
-                MainLayout.Children.Remove(TopView);
+                _mainLayout.Children.Remove(TopView);
 
             TopView = view;
             AbsoluteLayout.SetLayoutBounds(TopView, new Rectangle(0, 0, 1, TopPanelRatio));
             AbsoluteLayout.SetLayoutFlags(TopView, AbsoluteLayoutFlags.All);
             TopView.VerticalOptions = LayoutOptions.FillAndExpand;
 
-            var topViewUpSwipeGesture = new SwipeGestureRecognizer { Direction = SwipeDirection.Up };
-            topViewUpSwipeGesture.Swiped += OnTopViewSwiped;
-            TopView.GestureRecognizers.Add(topViewUpSwipeGesture);
-
-            var topViewDownSwipeGesture = new SwipeGestureRecognizer { Direction = SwipeDirection.Down };
-            topViewDownSwipeGesture.Swiped += OnTopViewSwiped;
-            TopView.GestureRecognizers.Add(topViewDownSwipeGesture);
-
-            var topViewTapGesture = new TapGestureRecognizer();
-            topViewTapGesture.Tapped += (s, o) =>
+            if (IsSwipeGesturesEnabled)
             {
-                if (ActivePanel == Panel.Top) return;
+                var topViewUpSwipeGesture = new SwipeGestureRecognizer { Direction = SwipeDirection.Up };
+                topViewUpSwipeGesture.Swiped += OnTopViewSwiped;
+                TopView.GestureRecognizers.Add(topViewUpSwipeGesture);
 
-                if (HasOneActivePanel)
+                var topViewDownSwipeGesture = new SwipeGestureRecognizer { Direction = SwipeDirection.Down };
+                topViewDownSwipeGesture.Swiped += OnTopViewSwiped;
+                TopView.GestureRecognizers.Add(topViewDownSwipeGesture);
+            }
+
+            if (IsTapToOpenEnabled)
+            {
+                var topViewTapGesture = new TapGestureRecognizer();
+                topViewTapGesture.Tapped += (s, o) =>
                 {
-                    ActivateOnePanel(Panel.Top);
-                }
-            };
-            TopView.GestureRecognizers.Add(topViewTapGesture);
+                    if (ActivePanel == Panel.Top) return;
 
-            MainLayout.Children.Add(TopView);
+                    if (HasOneActivePanel)
+                    {
+                        ActivateOnePanel(Panel.Top);
+                    }
+                };
+
+                TopView.GestureRecognizers.Add(topViewTapGesture);
+            }
+
+            _mainLayout.Children.Add(TopView);
         }
 
         private void SetBottomView(ContentView view)
         {
             if (BottomView != null)
-                MainLayout.Children.Remove(BottomView);
+                _mainLayout.Children.Remove(BottomView);
 
             BottomView = view;
             AbsoluteLayout.SetLayoutBounds(BottomView, new Rectangle(0, 0, 1, BottomPanelRatio));
             AbsoluteLayout.SetLayoutFlags(BottomView, AbsoluteLayoutFlags.All);
             BottomView.VerticalOptions = LayoutOptions.FillAndExpand;
 
-
-            var bottomViewUpSwipeGesture = new SwipeGestureRecognizer { Direction = SwipeDirection.Up };
-            bottomViewUpSwipeGesture.Swiped += OnBottomViewSwiped;
-            BottomView.GestureRecognizers.Add(bottomViewUpSwipeGesture);
-
-            var bottomViewDownSwipeGesture = new SwipeGestureRecognizer { Direction = SwipeDirection.Down };
-            bottomViewDownSwipeGesture.Swiped += OnBottomViewSwiped;
-            BottomView.GestureRecognizers.Add(bottomViewDownSwipeGesture);
-
-            var bottomViewTapGesture = new TapGestureRecognizer();
-            bottomViewTapGesture.Tapped += (s, o) =>
+            if (IsSwipeGesturesEnabled)
             {
-                if (ActivePanel == Panel.Bottom) return;
+                var bottomViewUpSwipeGesture = new SwipeGestureRecognizer { Direction = SwipeDirection.Up };
+                bottomViewUpSwipeGesture.Swiped += OnBottomViewSwiped;
+                BottomView.GestureRecognizers.Add(bottomViewUpSwipeGesture);
 
-                if (HasOneActivePanel)
+                var bottomViewDownSwipeGesture = new SwipeGestureRecognizer { Direction = SwipeDirection.Down };
+                bottomViewDownSwipeGesture.Swiped += OnBottomViewSwiped;
+                BottomView.GestureRecognizers.Add(bottomViewDownSwipeGesture);
+            }
+
+            if (IsTapToOpenEnabled)
+            {
+                var bottomViewTapGesture = new TapGestureRecognizer();
+                bottomViewTapGesture.Tapped += (s, o) =>
                 {
-                    ActivateOnePanel(Panel.Bottom);
-                }
-            };
-            BottomView.GestureRecognizers.Add(bottomViewTapGesture);
+                    if (ActivePanel == Panel.Bottom) return;
 
-            MainLayout.Children.Add(BottomView);
+                    if (HasOneActivePanel)
+                    {
+                        ActivateOnePanel(Panel.Bottom);
+                    }
+                };
+
+                BottomView.GestureRecognizers.Add(bottomViewTapGesture);
+            }
+            _mainLayout.Children.Add(BottomView);
         }
         #endregion
 
@@ -427,7 +495,7 @@ namespace PanelViewControl
             switch (e.StatusType)
             {
                 case GestureStatus.Running:
-                    if (IsSliding) return;
+                    if (_isSliding) return;
 
                     var direction = GetSwipeDirectionFromPan(e.TotalX, e.TotalY, SwipeSensitivity);
 
@@ -679,88 +747,88 @@ namespace PanelViewControl
 
             if (TopView == null) return;
 
-            IsSliding = true;
+            _isSliding = true;
 
             await TopView.TranslateTo(0, TopPanelFloatSpacing - TopView.Height, 300, Easing.SinOut);
 
-            IsSliding = false;
+            _isSliding = false;
         }
 
         protected virtual async void TopViewSlideDown()
         {
             if (TopView == null) return;
 
-            IsSliding = true;
+            _isSliding = true;
 
             await TopView.TranslateTo(0, 0, 300, Easing.SinOut);
 
-            IsSliding = false;
+            _isSliding = false;
         }
 
         protected virtual async void BottomViewSlideUp()
         {
             if (BottomView == null) return;
 
-            IsSliding = true;
+            _isSliding = true;
 
-            await BottomView.TranslateTo(0, MainLayout.Height - BottomView.Height, 300, Easing.SinOut);
+            await BottomView.TranslateTo(0, _mainLayout.Height - BottomView.Height, 300, Easing.SinOut);
 
-            IsSliding = false;
+            _isSliding = false;
         }
 
         protected virtual async void BottomViewSlideDown()
         {
             if (BottomView == null) return;
 
-            IsSliding = true;
+            _isSliding = true;
 
-            await BottomView.TranslateTo(0, MainLayout.Height - BottomPanelFloatSpacing, 300, Easing.SinOut);
+            await BottomView.TranslateTo(0, _mainLayout.Height - BottomPanelFloatSpacing, 300, Easing.SinOut);
 
-            IsSliding = false;
+            _isSliding = false;
         }
 
         protected virtual async void LeftViewSlideToEnd()
         {
             if (LeftView == null) return;
 
-            IsSliding = true;
+            _isSliding = true;
 
             await LeftView.TranslateTo(0, 0, 300, Easing.SinOut);
 
-            IsSliding = false;
+            _isSliding = false;
         }
 
         protected virtual async void LeftViewSlideToStart()
         {
             if (LeftView == null) return;
 
-            IsSliding = true;
+            _isSliding = true;
 
             await LeftView.TranslateTo(LeftPanelFloatSpacing - LeftView.Width, 0, 300, Easing.SinOut);
 
-            IsSliding = false;
+            _isSliding = false;
         }
 
         protected virtual async void RightViewSlideToEnd()
         {
             if (RightView == null) return;
 
-            IsSliding = true;
+            _isSliding = true;
 
-            await RightView.TranslateTo(MainLayout.Width - RightPanelFloatSpacing, 0, 300, Easing.SinOut);
+            await RightView.TranslateTo(_mainLayout.Width - RightPanelFloatSpacing, 0, 300, Easing.SinOut);
 
-            IsSliding = false;
+            _isSliding = false;
         }
 
         protected virtual async void RightViewSlideToStart()
         {
             if (RightView == null) return;
 
-            IsSliding = true;
+            _isSliding = true;
 
-            await RightView.TranslateTo(MainLayout.Width - RightView.Width, 0, 300, Easing.SinOut);
+            await RightView.TranslateTo(_mainLayout.Width - RightView.Width, 0, 300, Easing.SinOut);
 
-            IsSliding = false;
+            _isSliding = false;
         }
         #endregion
 

@@ -4,41 +4,43 @@
              xmlns:panelControl="clr-namespace:PanelViewControl;assembly=PanelViewControl"
              x:Class="PanelViewSample.Views.MainPage"
              Title="{Binding Title}">
-  
-
-    <panelControl:PanelViewControl LeftPanelFloatSpacing="40"
-                             TopPanelFloatSpacing="50"
-                             RightPanelFloatSpacing="60"
-                             BottomPanelFloatSpacing="70"
-                             LeftPanelRatio="0.4"
-                             TopPanelRatio="0.5"
-                             RightPanelRatio="0.6"
-                             BottomPanelRatio="0.9"
-                             IsBottomPannelOverlayed="True">
-
-      <panelControl:PanelViewControl.MainView>
-        <ContentView BackgroundColor="Black" />
-      </panelControl:PanelViewControl.MainView>
 
 
-      <panelControl:PanelViewControl.LeftView>
-        <ContentView BackgroundColor="Gold" />
-      </panelControl:PanelViewControl.LeftView>
+  <panelControl:PanelViewControl LeftPanelFloatSpacing="40"
+                           TopPanelFloatSpacing="50"
+                           RightPanelFloatSpacing="60"
+                           BottomPanelFloatSpacing="70"
+                           LeftPanelRatio="0.4"
+                           TopPanelRatio="0.5"
+                           RightPanelRatio="0.6"
+                           BottomPanelRatio="0.9"
+                           IsBottomPanelOverlayed="True"
+                           IsSwipeGesturesEnabled="True"
+                           IsTapToOpenEnabled="False">
 
-      <panelControl:PanelViewControl.RightView>
-        <ContentView BackgroundColor="Purple" />
-      </panelControl:PanelViewControl.RightView>
+    <panelControl:PanelViewControl.MainView>
+      <ContentView BackgroundColor="Black" />
+    </panelControl:PanelViewControl.MainView>
 
-      <panelControl:PanelViewControl.TopView>
-        <ContentView BackgroundColor="LawnGreen" />
-      </panelControl:PanelViewControl.TopView>
 
-      <panelControl:PanelViewControl.BottomView>
-        <ContentView BackgroundColor="OrangeRed"
-                     Opacity="0.7" />
-      </panelControl:PanelViewControl.BottomView>
+    <panelControl:PanelViewControl.LeftView>
+      <ContentView BackgroundColor="Gold" />
+    </panelControl:PanelViewControl.LeftView>
 
-    </panelControl:PanelViewControl>
-    
-  
+    <panelControl:PanelViewControl.RightView>
+      <ContentView BackgroundColor="Purple" />
+    </panelControl:PanelViewControl.RightView>
+
+    <panelControl:PanelViewControl.TopView>
+      <ContentView BackgroundColor="LawnGreen" />
+    </panelControl:PanelViewControl.TopView>
+
+    <panelControl:PanelViewControl.BottomView>
+      <ContentView BackgroundColor="OrangeRed"
+                   Opacity="0.7" />
+    </panelControl:PanelViewControl.BottomView>
+
+  </panelControl:PanelViewControl>
+
+
 </ContentPage>
