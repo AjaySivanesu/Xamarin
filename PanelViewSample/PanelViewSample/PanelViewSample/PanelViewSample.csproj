@@ -10,7 +10,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\PanelViewControl\PanelViewControl.csproj" />
+    <ProjectReference Include="..\..\..\PanelViewControl\PanelViewControl\PanelViewControl\PanelViewControl.csproj" />
   </ItemGroup>
 
 </Project>

@@ -5,7 +5,7 @@ using System.Text;
 
 using Xamarin.Forms;
 
-namespace PanelViewControl.Control
+namespace PanelViewControl
 {
     public enum Panel
     {
