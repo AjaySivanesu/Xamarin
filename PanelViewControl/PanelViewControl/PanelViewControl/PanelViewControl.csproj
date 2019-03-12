@@ -2,6 +2,17 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
+    <Authors>Ajay Sivanesu</Authors>
+    <Description>A Xamarin Froms control to achieve multi-directional sliding panel/drawer view control.</Description>
+    <PackageLicenseUrl>https://github.com/AjaySivanesu/Xamarin/blob/master/LICENSE</PackageLicenseUrl>
+    <PackageProjectUrl>https://github.com/AjaySivanesu/Xamarin/tree/master/PanelViewControl</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/AjaySivanesu/Xamarin/tree/master/PanelViewControl</RepositoryUrl>
+    <RepositoryType>.NET Standard</RepositoryType>
+    <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+    <PackageTags>Xamarin Forms View Contorl Panel Drawer Slide Sliding MVVM Multi-Directional BottomDrawer TopDrawer LeftDrawer RightDrawer</PackageTags>
+    <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+    <NeutralLanguage>en</NeutralLanguage>
+    <PackageReleaseNotes>Preview Version</PackageReleaseNotes>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">

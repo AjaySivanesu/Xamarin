@@ -138,10 +138,10 @@ namespace PanelViewControl
         public int TopPanelFloatSpacing { get; set; }
         public int BottomPanelFloatSpacing { get; set; }
 
-        public bool IsLeftPannelOverlayed { get; set; } = false;
-        public bool IsRightPannelOverlayed { get; set; } = false;
-        public bool IsTopPannelOverlayed { get; set; } = false;
-        public bool IsBottomPannelOverlayed { get; set; } = false;
+        public bool IsLeftPanelOverlayed { get; set; } = false;
+        public bool IsRightPanelOverlayed { get; set; } = false;
+        public bool IsTopPanelOverlayed { get; set; } = false;
+        public bool IsBottomPanelOverlayed { get; set; } = false;
 
         public PanelViewControl()
         {
@@ -159,10 +159,10 @@ namespace PanelViewControl
                     BottomView.TranslationY = visualElement.Height - BottomPanelFloatSpacing;
                 }
 
-                MainView.Margin = new Thickness(IsLeftPannelOverlayed ? 0 : LeftPanelFloatSpacing,
-                                IsTopPannelOverlayed ? 0 : TopPanelFloatSpacing,
-                                IsRightPannelOverlayed ? 0 : RightPanelFloatSpacing,
-                                IsBottomPannelOverlayed ? 0 : BottomPanelFloatSpacing);
+                MainView.Margin = new Thickness(IsLeftPanelOverlayed ? 0 : LeftPanelFloatSpacing,
+                                IsTopPanelOverlayed ? 0 : TopPanelFloatSpacing,
+                                IsRightPanelOverlayed ? 0 : RightPanelFloatSpacing,
+                                IsBottomPanelOverlayed ? 0 : BottomPanelFloatSpacing);
 
             };
         }
@@ -235,10 +235,10 @@ namespace PanelViewControl
             MainView.VerticalOptions = LayoutOptions.FillAndExpand;
             MainView.HorizontalOptions = LayoutOptions.FillAndExpand;
 
-            MainView.Margin = new Thickness(IsLeftPannelOverlayed ? 0 : LeftPanelFloatSpacing,
-                                            IsRightPannelOverlayed ? 0 : RightPanelFloatSpacing,
-                                            IsTopPannelOverlayed ? 0 : TopPanelFloatSpacing,
-                                            IsBottomPannelOverlayed ? 0 : BottomPanelFloatSpacing);
+            MainView.Margin = new Thickness(IsLeftPanelOverlayed ? 0 : LeftPanelFloatSpacing,
+                                            IsRightPanelOverlayed ? 0 : RightPanelFloatSpacing,
+                                            IsTopPanelOverlayed ? 0 : TopPanelFloatSpacing,
+                                            IsBottomPanelOverlayed ? 0 : BottomPanelFloatSpacing);
 
 
 
@@ -273,8 +273,8 @@ namespace PanelViewControl
             AbsoluteLayout.SetLayoutFlags(LeftView, AbsoluteLayoutFlags.All);
             LeftView.VerticalOptions = LayoutOptions.FillAndExpand;
 
-            LeftView.Margin = new Thickness(0, IsTopPannelOverlayed ? 0 : TopPanelFloatSpacing,
-                                            0, IsBottomPannelOverlayed ? 0 : BottomPanelFloatSpacing);
+            LeftView.Margin = new Thickness(0, IsTopPanelOverlayed ? 0 : TopPanelFloatSpacing,
+                                            0, IsBottomPanelOverlayed ? 0 : BottomPanelFloatSpacing);
 
             var leftViewRightSwipeGesture = new SwipeGestureRecognizer { Direction = SwipeDirection.Right };
             leftViewRightSwipeGesture.Swiped += OnLeftViewSwiped;
@@ -310,8 +310,8 @@ namespace PanelViewControl
             RightView.VerticalOptions = LayoutOptions.FillAndExpand;
             RightView.HorizontalOptions = LayoutOptions.FillAndExpand;
 
-            RightView.Margin = new Thickness(0, IsTopPannelOverlayed ? 0 : TopPanelFloatSpacing,
-                                             0, IsBottomPannelOverlayed ? 0 : BottomPanelFloatSpacing);
+            RightView.Margin = new Thickness(0, IsTopPanelOverlayed ? 0 : TopPanelFloatSpacing,
+                                             0, IsBottomPanelOverlayed ? 0 : BottomPanelFloatSpacing);
 
             var rightViewRightSwipeGesture = new SwipeGestureRecognizer { Direction = SwipeDirection.Right };
             rightViewRightSwipeGesture.Swiped += OnRightViewSwiped;
