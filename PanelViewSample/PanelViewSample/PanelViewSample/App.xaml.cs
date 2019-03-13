@@ -30,6 +30,13 @@ namespace PanelViewSample
         {
             containerRegistry.RegisterForNavigation<NavigationPage>();
             containerRegistry.RegisterForNavigation<MainPage, MainPageViewModel>();
+            containerRegistry.RegisterForNavigation<LeftPanelPage, LeftPanelPageViewModel>();
+            containerRegistry.RegisterForNavigation<TopPanelPage, TopPanelPageViewModel>();
+            containerRegistry.RegisterForNavigation<RightPanelPage, RightPanelPageViewModel>();
+            containerRegistry.RegisterForNavigation<BottomPanelPage, BottomPanelPageViewModel>();
+            containerRegistry.RegisterForNavigation<MultiDirectionalPanelPage, MultiDirectionalPanelPageViewModel>();
+            containerRegistry.RegisterForNavigation<MultiDirectionalSingleActivePanelPage, MultiDirectionalSingleActivePanelPageViewModel>();
+            containerRegistry.RegisterForNavigation<MultiDirectionalFullPanelsPage, MultiDirectionalFullPanelsPageViewModel>();
         }
     }
 }

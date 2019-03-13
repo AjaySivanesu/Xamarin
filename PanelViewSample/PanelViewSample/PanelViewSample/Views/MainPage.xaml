@@ -1,46 +1,35 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:panelControl="clr-namespace:PanelViewControl;assembly=PanelViewControl"
              x:Class="PanelViewSample.Views.MainPage"
              Title="{Binding Title}">
 
+    <ScrollView>
+        
+        <StackLayout>
+            
+            <Button Text="Left Panel Page"
+                    Command="{Binding NavigateToLeftPanelPageCommand}" />
 
-  <panelControl:PanelViewControl LeftPanelFloatSpacing="40"
-                           TopPanelFloatSpacing="50"
-                           RightPanelFloatSpacing="60"
-                           BottomPanelFloatSpacing="70"
-                           LeftPanelRatio="0.4"
-                           TopPanelRatio="0.5"
-                           RightPanelRatio="0.6"
-                           BottomPanelRatio="0.9"
-                           IsBottomPanelOverlayed="True"
-                           IsSwipeGesturesEnabled="True"
-                           IsTapToOpenEnabled="False">
+            <Button Text="Top Panel Page"
+                    Command="{Binding NavigateToTopPanelPageCommand}" />
 
-    <panelControl:PanelViewControl.MainView>
-      <ContentView BackgroundColor="Black" />
-    </panelControl:PanelViewControl.MainView>
+            <Button Text="Right Panel Page"
+                    Command="{Binding NavigateToRightPanelPageCommand}" />
 
+            <Button Text="Bottom Panel Page"
+                    Command="{Binding NavigateToBottomPanelPageCommand}" />
 
-    <panelControl:PanelViewControl.LeftView>
-      <ContentView BackgroundColor="Gold" />
-    </panelControl:PanelViewControl.LeftView>
+            <Button Text="Multi-Directional Panel Page"
+                    Command="{Binding NavigateToMultiDirectionalPanelPageCommand}" />
 
-    <panelControl:PanelViewControl.RightView>
-      <ContentView BackgroundColor="Purple" />
-    </panelControl:PanelViewControl.RightView>
+            <Button Text="Multi-Directional Single-Active Panel Page"
+                    Command="{Binding NavigateToMultiDirectionalSingleActivePanelPageCommand}" />
 
-    <panelControl:PanelViewControl.TopView>
-      <ContentView BackgroundColor="LawnGreen" />
-    </panelControl:PanelViewControl.TopView>
+            <Button Text="Multi-Directional Full Panels Page"
+                    Command="{Binding NavigateToMultiDirectionalFullPanelPageCommand}" />
 
-    <panelControl:PanelViewControl.BottomView>
-      <ContentView BackgroundColor="OrangeRed"
-                   Opacity="0.7" />
-    </panelControl:PanelViewControl.BottomView>
-
-  </panelControl:PanelViewControl>
-
+        </StackLayout>
+    </ScrollView>
 
 </ContentPage>

@@ -178,10 +178,10 @@ namespace PanelViewControl
 
                 if (ActivePanel == Panel.None)
                 {
-                    LeftView.TranslationX = LeftPanelFloatSpacing - LeftView.Width;
-                    RightView.TranslationX = _mainLayout.Width - RightPanelFloatSpacing;
-                    TopView.TranslationY = TopPanelFloatSpacing - TopView.Height;
-                    BottomView.TranslationY = visualElement.Height - BottomPanelFloatSpacing;
+                    if (LeftView != null) LeftView.TranslationX = LeftPanelFloatSpacing - LeftView.Width;
+                    if (RightView != null) RightView.TranslationX = _mainLayout.Width - RightPanelFloatSpacing;
+                    if (TopView != null) TopView.TranslationY = TopPanelFloatSpacing - TopView.Height;
+                    if (BottomView != null) BottomView.TranslationY = visualElement.Height - BottomPanelFloatSpacing;
                 }
 
                 MainView.Margin = new Thickness(IsLeftPanelOverlayed ? 0 : LeftPanelFloatSpacing,
@@ -313,10 +313,16 @@ namespace PanelViewControl
             LeftView = view;
             AbsoluteLayout.SetLayoutBounds(LeftView, new Rectangle(0, 0, LeftPanelRatio, 1));
             AbsoluteLayout.SetLayoutFlags(LeftView, AbsoluteLayoutFlags.All);
-            LeftView.VerticalOptions = LayoutOptions.FillAndExpand;
+            LeftView.VerticalOptions = LayoutOptions.Fill;
 
-            LeftView.Margin = new Thickness(0, IsTopPanelOverlayed ? 0 : TopPanelFloatSpacing,
-                                            0, IsBottomPanelOverlayed ? 0 : BottomPanelFloatSpacing);
+            //LeftView.Margin = new Thickness(IsLeftPanelOverlayed ? view.Margin.Left : view.Margin.Left + LeftPanelFloatSpacing,
+            //                                IsTopPanelOverlayed ? view.Margin.Top : view.Margin.Top + TopPanelFloatSpacing,
+            //                                IsRightPanelOverlayed ? view.Margin.Right : RightPanelFloatSpacing,
+            //                                IsBottomPanelOverlayed ? view.Margin.Bottom : view.Margin.Bottom + BottomPanelFloatSpacing);
+
+            LeftView.Margin = new Thickness(0, IsTopPanelOverlayed ? 0 : view.Margin.Top + TopPanelFloatSpacing,
+                                            0, IsBottomPanelOverlayed ? 0 : view.Margin.Bottom + BottomPanelFloatSpacing);
+
 
             if (IsSwipeGesturesEnabled)
             {
@@ -359,8 +365,8 @@ namespace PanelViewControl
             RightView.VerticalOptions = LayoutOptions.FillAndExpand;
             RightView.HorizontalOptions = LayoutOptions.FillAndExpand;
 
-            RightView.Margin = new Thickness(0, IsTopPanelOverlayed ? 0 : TopPanelFloatSpacing,
-                                             0, IsBottomPanelOverlayed ? 0 : BottomPanelFloatSpacing);
+            RightView.Margin = new Thickness(0, IsTopPanelOverlayed ? 0 : view.Margin.Top + TopPanelFloatSpacing,
+                                             0, IsBottomPanelOverlayed ? 0 : view.Margin.Bottom + BottomPanelFloatSpacing);
 
             if (IsSwipeGesturesEnabled)
             {

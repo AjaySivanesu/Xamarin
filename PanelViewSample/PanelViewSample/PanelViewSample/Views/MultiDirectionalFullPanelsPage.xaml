@@ -1,0 +1,36 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:prism="clr-namespace:Prism.Mvvm;assembly=Prism.Forms"
+             prism:ViewModelLocator.AutowireViewModel="True"
+             x:Class="PanelViewSample.Views.MultiDirectionalFullPanelsPage"
+             xmlns:panelControl="clr-namespace:PanelViewControl;assembly=PanelViewControl"
+             Title="{Binding Title}">
+
+
+    <panelControl:PanelViewControl IsSwipeGesturesEnabled="True"
+                                   IsTapToOpenEnabled="True">
+
+        <panelControl:PanelViewControl.MainView>
+            <ContentView BackgroundColor="Black"/>
+        </panelControl:PanelViewControl.MainView>
+
+        <panelControl:PanelViewControl.LeftView>
+            <ContentView BackgroundColor="Gold"/>
+        </panelControl:PanelViewControl.LeftView>
+
+        <panelControl:PanelViewControl.RightView>
+            <ContentView BackgroundColor="Purple" />
+        </panelControl:PanelViewControl.RightView>
+
+        <panelControl:PanelViewControl.TopView>
+            <ContentView BackgroundColor="LawnGreen"/>
+        </panelControl:PanelViewControl.TopView>
+
+        <panelControl:PanelViewControl.BottomView>
+            <ContentView BackgroundColor="OrangeRed"/>
+        </panelControl:PanelViewControl.BottomView>
+
+    </panelControl:PanelViewControl>
+
+</ContentPage>

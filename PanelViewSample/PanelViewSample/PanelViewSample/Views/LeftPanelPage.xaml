@@ -1,0 +1,28 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:prism="clr-namespace:Prism.Mvvm;assembly=Prism.Forms"
+             prism:ViewModelLocator.AutowireViewModel="True"
+             x:Class="PanelViewSample.Views.LeftPanelPage"
+             xmlns:panelControl="clr-namespace:PanelViewControl;assembly=PanelViewControl"
+             Title="{Binding Title}">
+
+    <panelControl:PanelViewControl LeftPanelFloatSpacing="40"
+                                   LeftPanelRatio="0.7"
+                                   IsLeftPanelOverlayed="True"
+                                   IsSwipeGesturesEnabled="True"
+                                   IsTapToOpenEnabled="True">
+
+        <panelControl:PanelViewControl.MainView>
+            <ContentView BackgroundColor="Black" />
+        </panelControl:PanelViewControl.MainView>
+
+        <panelControl:PanelViewControl.LeftView>
+            <ContentView BackgroundColor="Gold"
+                         Opacity="0.7"
+                         Margin="0,80,0,20"/>
+        </panelControl:PanelViewControl.LeftView>
+
+    </panelControl:PanelViewControl>
+
+</ContentPage>
