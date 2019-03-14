@@ -5,9 +5,8 @@ This is a bindable sliding panel control for Xamarin.Forms using .NET Standard 2
 ### Setup
 1. Download NuGet PanelViewControl
 2. Include header on page: xmlns:panelControl="clr-namespace:PanelViewControl;assembly=PanelViewControl"
-3. Use the control APIs to modify the UI/UX
-  e.g.  
-  
+3. Use the control APIs to modify the UI/UX.
+```
       <panelControl:PanelViewControl BottomPanelFloatSpacing="50"
                                    BottomPanelRatio="0.6"
                                    IsBottomPanelOverlayed="True">
@@ -22,7 +21,7 @@ This is a bindable sliding panel control for Xamarin.Forms using .NET Standard 2
             </ContentView>
         </panelControl:PanelViewControl.BottomView>
     </panelControl:PanelViewControl>
-    
+```
     
     
 
