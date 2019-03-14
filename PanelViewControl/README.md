@@ -2,6 +2,28 @@
 
 This is a bindable sliding panel control for Xamarin.Forms using .NET Standard 2.0
 
+### Setup
+1. Download NuGet PanelViewControl
+2. Include header on page: xmlns:panelControl="clr-namespace:PanelViewControl;assembly=PanelViewControl"
+3. Use the control APIs to modify the UI/UX
+  e.g.
+      <panelControl:PanelViewControl BottomPanelFloatSpacing="50"
+                                   BottomPanelRatio="0.6"
+                                   IsBottomPanelOverlayed="True">
+
+        <panelControl:PanelViewControl.MainView>
+            <ContentView BackgroundColor="Black" />
+        </panelControl:PanelViewControl.MainView>
+
+        <panelControl:PanelViewControl.BottomView>
+            <ContentView BackgroundColor="OrangeRed"
+                         Margin="10,0"
+                         Opacity="0.7">
+            </ContentView>
+        </panelControl:PanelViewControl.BottomView>
+    </panelControl:PanelViewControl>
+    
+
 ### API
 * MainView - [ContentView][Default null][Required] -  This is the main background view for the page.
 * LeftView - [ContentView][Default null] - This is view used to render the Left Panel.
