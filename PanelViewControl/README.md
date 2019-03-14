@@ -23,6 +23,8 @@ This is a bindable sliding panel control for Xamarin.Forms using .NET Standard 2
         </panelControl:PanelViewControl.BottomView>
     </panelControl:PanelViewControl>
     
+    
+    
 
 ### API
 * MainView - [ContentView][Default null][Required] -  This is the main background view for the page.
