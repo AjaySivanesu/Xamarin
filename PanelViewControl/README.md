@@ -2,6 +2,10 @@
 
 This is a bindable sliding panel control for Xamarin.Forms using .NET Standard 2.0
 
+| Package | NuGet |
+| --------------- | ----- |
+| [PanelViewControl][PanelViewControlNuGet] | [![PanelViewControlNuGetShield]][PanelViewControlNuGet] |
+
 ### Setup
 1. Download NuGet PanelViewControl
 2. Include header on page: xmlns:panelControl="clr-namespace:PanelViewControl;assembly=PanelViewControl"
