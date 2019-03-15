@@ -57,3 +57,6 @@ This is a bindable sliding panel control for Xamarin.Forms using .NET Standard 2
 * IsTopPanelOverlayed - [Bool][Default False] - Define if the panel is overlayed on top of MainView.
 * IsRightPanelOverlayed - [Bool][Default False] - Define if the panel is overlayed on top of MainView.
 * IsBottomPanelOverlayed - [Bool][Default False] - Define if the panel is overlayed on top of MainView.
+
+[PanelViewControlNuGet]: https://www.nuget.org/packages/PanelViewControl/
+[PanelViewControlNuGetShield]: https://img.shields.io/nuget/vpre/PanelViewControl.svg
