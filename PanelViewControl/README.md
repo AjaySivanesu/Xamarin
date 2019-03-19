@@ -14,8 +14,9 @@ This is a bindable sliding panel control for Xamarin.Forms using .NET Standard 2
 * Example:
 ```
       <panelControl:PanelViewControl BottomPanelFloatSpacing="50"
-                                   BottomPanelRatio="0.6"
-                                   IsBottomPanelOverlayed="True">
+                                     BottomPanelRatio="0.6"
+                                     IsBottomPanelOverlayed="True">
+                                     
         <panelControl:PanelViewControl.MainView>
             <ContentView BackgroundColor="Black" />
         </panelControl:PanelViewControl.MainView>
@@ -26,6 +27,7 @@ This is a bindable sliding panel control for Xamarin.Forms using .NET Standard 2
                          Opacity="0.7">
             </ContentView>
         </panelControl:PanelViewControl.BottomView>
+        
     </panelControl:PanelViewControl>
 ```
     
